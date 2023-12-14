@@ -1,0 +1,96 @@
+// (1) queryDSL 추가
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.17'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+
+	/* 코드 포맷팅 */
+	id 'com.diffplug.spotless' version '6.11.0'
+
+	// (2) queryDSL 추가
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '11'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	/* jwt */
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	/* Redis */
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	/* 스프링 시큐리티 */
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// (3) queryDSL 추가
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
+	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.mysql:mysql-connector-j'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+/* 코드 포맷팅 spotless 설정 */
+spotless {
+	java {
+		target("**/*.java")
+		removeUnusedImports()
+		trimTrailingWhitespace()
+		endWithNewline()
+		importOrder()
+		indentWithTabs()
+		googleJavaFormat().aosp()
+	}
+}
+
+// (4) queryDSL 추가 : QueryDSL 빌드 옵션
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+// 여기까지

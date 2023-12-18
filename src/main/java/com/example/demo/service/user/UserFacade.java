@@ -2,6 +2,7 @@ package com.example.demo.service.user;
 
 import com.example.demo.constant.Role;
 import com.example.demo.constant.TrustScoreTypeIdentifier;
+import com.example.demo.constant.UserStatus;
 import com.example.demo.dto.common.ResponseDto;
 import com.example.demo.dto.position.response.PositionInfoResponseDto;
 import com.example.demo.dto.technology_stack.response.TechnologyStackInfoResponseDto;
@@ -69,6 +70,7 @@ public class UserFacade {
                         .intro(createRequest.getIntro())
                         .position(position)
                         .role(Role.USER)
+                        .status(UserStatus.ACTIVE)
                         .build();
 
         // 회원 저장
@@ -241,15 +243,25 @@ public class UserFacade {
                 .collect(Collectors.toList());
         // 회원 프로젝트 이력 개수
         long projectHistoryTotalCount = userProjectHistoryService.getUserProjectHistoryTotalCount(currentUser.getId());
-        // 회원 프로젝트 이력 목록 정보 응답 DTO
-        List<UserProjectHistoryInfoResponseDto> projectHistoryListInfo = userProjectHistoryService.getUserProjectHistoryList(currentUser.getId(), 1);
-
 
         // 내 정보 응답 DTO 생성
         UserMyInfoResponseDto myInfoResponse = UserMyInfoResponseDto.of(currentUser.getId(), currentUser.getEmail(), currentUser.getNickname(),
                 currentUser.getProfileImgSrc(), trustScore.getScore(), trustGradeInfo, positionInfo, techStacksInfo, projectHistoryTotalCount,
-                projectHistoryListInfo, DateTimeConverter.toStringConvert(currentUser.getCreateDate()), DateTimeConverter.toStringConvert(currentUser.getUpdateDate()));
+                DateTimeConverter.toStringConvert(currentUser.getCreateDate()), DateTimeConverter.toStringConvert(currentUser.getUpdateDate()));
 
         return ResponseDto.success("내 정보 조회가 완료되었습니다.", myInfoResponse);
+    }
+
+    /**
+     * 내 프로젝트 이력 목록 조회 (페이징)
+     * @param user
+     * @param pageNumber
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public ResponseDto<?> getMyProjectHistoryList(PrincipalDetails user, int pageNumber) {
+        List<UserProjectHistoryInfoResponseDto> projectHistoryList = userProjectHistoryService.getUserProjectHistoryList(user.getId(), pageNumber);
+
+        return ResponseDto.success("내 프로젝트 이력 목록 조회가 완료되었습니다.", projectHistoryList);
     }
 }

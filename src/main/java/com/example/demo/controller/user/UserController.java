@@ -53,4 +53,10 @@ public class UserController {
     public ResponseEntity<ResponseDto<?>> myInfo(@AuthenticationPrincipal PrincipalDetails user) {
         return ResponseEntity.status(HttpStatus.OK).body(userFacade.getMyInfo(user));
     }
+
+    // 내 프로젝트 이력 목록 조회
+    @GetMapping("/api/user/me/project-history")
+    public ResponseEntity<ResponseDto<?>> myProjectHistoryList(@AuthenticationPrincipal PrincipalDetails user, @RequestParam int pageNumber) {
+        return ResponseEntity.status(HttpStatus.OK).body(userFacade.getMyProjectHistoryList(user, pageNumber));
+    }
 }

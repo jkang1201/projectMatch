@@ -4,11 +4,9 @@ import com.example.demo.security.SecurityResponseHandler;
 import com.example.demo.security.custom.UserAuthenticationFailureHandler;
 import com.example.demo.security.custom.UserAuthenticationFilter;
 import com.example.demo.security.custom.UserAuthenticationSuccessHandler;
-import com.example.demo.security.jwt.JsonWebTokenAuthenticationFilter;
-import com.example.demo.security.jwt.JsonWebTokenExceptionFilter;
-import com.example.demo.security.jwt.JsonWebTokenLogoutFilter;
-import com.example.demo.security.jwt.JsonWebTokenProvider;
+import com.example.demo.security.jwt.*;
 import com.example.demo.service.token.RefreshTokenRedisService;
+import com.example.demo.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +31,12 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 public class SecurityConfig {
 
     private final JsonWebTokenProvider jsonWebTokenProvider;
-    private final RefreshTokenRedisService refreshTokenRedisService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final ObjectMapper objectMapper;
     private final CorsConfig corsConfig;
     private final SecurityResponseHandler securityResponseHandler;
+    private final RefreshTokenRedisService refreshTokenRedisService;
+    private final UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -95,6 +94,9 @@ public class SecurityConfig {
         http.addFilterBefore(
                 new JsonWebTokenExceptionFilter(securityResponseHandler),
                 JsonWebTokenAuthenticationFilter.class);
+        http.addFilterBefore(
+                new JsonWebTokenReissueFilter(refreshTokenRedisService, userService, objectMapper, jsonWebTokenProvider, securityResponseHandler),
+                JsonWebTokenExceptionFilter.class);
 
         return http.build();
     }

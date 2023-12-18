@@ -146,20 +146,16 @@ public class JsonWebTokenProvider {
         return null;
     }
 
-    // Request Header 에서 Refresh Token 정보 추출
-    public String resolveRefreshToken(HttpServletRequest request) {
+    // Request Header 에서 Refresh Cookie 정보 추출
+    public Cookie resolveRefreshCookie(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
-        String bearerToken =
-                Arrays.stream(cookies)
-                        .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
-                        .findFirst()
-                        .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN)
-                        .getValue();
-
-        if (StringUtils.hasText(bearerToken)) {
-            return bearerToken;
+        if(cookies == null) {
+            throw TokenCustomException.DOES_NOT_REFRESH_TOKEN;
         }
 
-        return null;
+        return Arrays.stream(cookies)
+                        .filter(cookie -> cookie.getName().equals(REFRESH_HEADER))
+                        .findFirst()
+                        .orElseThrow(() -> TokenCustomException.DOES_NOT_REFRESH_TOKEN);
     }
 }

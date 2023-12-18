@@ -43,6 +43,7 @@ public class TrustScoreTypeServiceTest {
     @DisplayName("개별 신뢰점수타입 DTO 반환")
     public void findByIdAndReturnDto_Method_Test_Pass() {
         // given
+        // 테스트 신뢰점수타입 생성
         TrustScoreType trustScoreType =
                 TrustScoreType.builder()
                         .upTrustScoreType(null)
@@ -54,11 +55,13 @@ public class TrustScoreTypeServiceTest {
                         .build();
 
         // when
+        // 테스트 신뢰점수타입 저장 및 조회
         TrustScoreType saveTrustScoreType = trustScoreTypeRepository.save(trustScoreType);
         TrustScoreTypeReadResponseDto responseDto =
                 trustScoreTypeService.findByIdAndReturnDto(saveTrustScoreType.getId());
 
         // then
+        // 조회 신뢰점수타입 검증
         Assertions.assertThat(responseDto.getTrustScoreTypeId()).isGreaterThan(26);
         Assertions.assertThat(responseDto.getTrustScoreTypeName()).isEqualTo("테스트 신뢰정보타입");
     }
@@ -67,6 +70,7 @@ public class TrustScoreTypeServiceTest {
     @DisplayName("상위신뢰점수타입 생성")
     public void createTrustScoreType_UpScoreType_Method_Test_Pass() {
         // given
+        // 상위 신뢰점수타입 생성 DTO 생성
         TrustScoreTypeCreateRequestDto requestDto = new TrustScoreTypeCreateRequestDto();
         requestDto.setUpTrustScoreTypeId(null);
         requestDto.setScore(null);
@@ -76,10 +80,12 @@ public class TrustScoreTypeServiceTest {
         requestDto.setTrustScoreTypeName("테스트 신뢰점수타입");
 
         // when
+        // 상위 신뢰점수타입 생성
         TrustScoreTypeCreateResponseDto responseDto =
                 trustScoreTypeService.createTrustScoreType(requestDto);
 
         // then
+        // 생성된 상위 신뢰점수타입 검증
         Assertions.assertThat(responseDto.getScore()).isNull();
         Assertions.assertThat(responseDto.getUpTrustScoreTypeName()).isNull();
         Assertions.assertThat(responseDto.getCreateDate()).isNotNull();
@@ -92,6 +98,7 @@ public class TrustScoreTypeServiceTest {
     @DisplayName("하위신뢰점수타입 생성")
     public void createTrustScoreType_LowScoreType_Method_Test_Pass() {
         // given
+        // 하위 신뢰점수타입 생성 DTO 생성
         TrustScoreTypeCreateRequestDto requestDto = new TrustScoreTypeCreateRequestDto();
         requestDto.setUpTrustScoreTypeId(WORK_INCOMPLETE);
         requestDto.setScore(700);
@@ -101,10 +108,12 @@ public class TrustScoreTypeServiceTest {
         requestDto.setTrustScoreTypeName("테스트 신뢰등급 업무 미흡");
 
         // when
+        // 하위 신뢰점수타입 생성
         TrustScoreTypeCreateResponseDto responseDto =
                 trustScoreTypeService.createTrustScoreType(requestDto);
 
         // then
+        // 생성된 하 신뢰점수타입 검증
         Assertions.assertThat(responseDto.getScore()).isEqualTo(700);
         Assertions.assertThat(responseDto.getUpTrustScoreTypeName()).isEqualTo("업무 미흡");
         Assertions.assertThat(responseDto.getCreateDate()).isNotNull();
@@ -117,6 +126,7 @@ public class TrustScoreTypeServiceTest {
     @DisplayName("신뢰점수타입 수정")
     public void updateTrustScoreType_Test() {
         // given
+        // 테스트 신뢰점수타입 생성
         TrustScoreTypeCreateRequestDto createRequestDto = new TrustScoreTypeCreateRequestDto();
         createRequestDto.setUpTrustScoreTypeId(WORK_INCOMPLETE);
         createRequestDto.setScore(700);
@@ -131,6 +141,7 @@ public class TrustScoreTypeServiceTest {
 
 
         // when
+        // 테스트 신뢰점수타입 수정
         TrustScoreTypeUpdateRequestDto updateRequestDto = new TrustScoreTypeUpdateRequestDto();
         updateRequestDto.setDeleteStatus("Y");
         updateRequestDto.setScore(1000);
@@ -144,6 +155,7 @@ public class TrustScoreTypeServiceTest {
                 orElseThrow(() -> TrustScoreTypeCustomException.NOT_FOUND_TRUST_SCORE_TYPE);
 
         // then
+        // 수정사항 적용 여부 검증
         Assertions.assertThat(createResponseDto.getScore()).isNotEqualTo(trustScoreType.getScore());
         Assertions.assertThat(createResponseDto.getDeleteStatus()).isNotEqualTo(trustScoreType.getDeleteStatus());
     }

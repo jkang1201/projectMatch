@@ -1,25 +1,5 @@
 package com.example.demo.dto.trust_score_type.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.demo.dto.trust_score_type.TrustScoreTypeBaseDto;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class TrustScoreTypeCreateRequestDto {
-
-    private Long upTrustScoreTypeId;
-
-    private String trustScoreTypeName;
-
-    private String trustGradeName;
-
-    private Integer score;
-
-    private String gubunCode;
-
-    private String deleteStatus;
-}
+public class TrustScoreTypeCreateRequestDto extends TrustScoreTypeBaseDto {}

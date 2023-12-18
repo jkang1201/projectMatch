@@ -29,8 +29,6 @@ public class UserMyInfoResponseDto {
 
     private long projectHistoryTotalCount;
 
-    private List<UserProjectHistoryInfoResponseDto> projectHistoryList;
-
     private String createDate;
 
     private String updateDate;
@@ -45,7 +43,6 @@ public class UserMyInfoResponseDto {
             PositionInfoResponseDto position,
             List<TechnologyStackInfoResponseDto> techStacks,
             long projectHistoryTotalCount,
-            List<UserProjectHistoryInfoResponseDto> projectHistoryList,
             String createDate,
             String updateDate) {
         return UserMyInfoResponseDto.builder()
@@ -58,7 +55,6 @@ public class UserMyInfoResponseDto {
                 .position(position)
                 .techStacks(techStacks)
                 .projectHistoryTotalCount(projectHistoryTotalCount)
-                .projectHistoryList(projectHistoryList)
                 .createDate(createDate)
                 .updateDate(updateDate)
                 .build();

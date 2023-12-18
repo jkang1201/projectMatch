@@ -6,7 +6,6 @@ import com.example.demo.dto.trust_score_type.TrustScoreTypeSearchCriteria;
 import com.example.demo.dto.trust_score_type.response.TrustScoreTypeReadResponseDto;
 import com.example.demo.model.project.QProject;
 import com.example.demo.model.trust_grade.QTrustGrade;
-import com.example.demo.model.trust_score.QTrustScore;
 import com.example.demo.model.trust_score.QTrustScoreType;
 import com.example.demo.model.trust_score.TrustScoreType;
 import com.querydsl.core.BooleanBuilder;
@@ -14,12 +13,8 @@ import com.querydsl.core.types.*;
 import com.querydsl.core.types.dsl.*;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -133,7 +128,7 @@ public class TrustScoreTypeRepositoryImpl implements TrustScoreTypeRepositoryCus
         return new PageImpl<>(list, pageable, total);
 
     }
-    /** */
+
     @Override
     public void disableTrustScoreType(Long trustScoreTypeId) {
         jpaQueryFactory.update(trustScoreType)

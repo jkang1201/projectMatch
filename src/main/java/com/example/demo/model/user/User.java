@@ -1,6 +1,7 @@
 package com.example.demo.model.user;
 
 import com.example.demo.constant.Role;
+import com.example.demo.constant.UserStatus;
 import com.example.demo.global.common.BaseTimeEntity;
 import com.example.demo.model.position.Position;
 import com.example.demo.model.trust_score.TrustScore;
@@ -44,6 +45,9 @@ public class User extends BaseTimeEntity {
     @JoinColumn(name = "trust_score_id")
     private TrustScore trustScore;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus status;
+
     @Builder
     private User(
             String email,
@@ -52,7 +56,8 @@ public class User extends BaseTimeEntity {
             String profileImgSrc,
             String intro,
             Position position,
-            Role role) {
+            Role role,
+            UserStatus status) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -60,6 +65,7 @@ public class User extends BaseTimeEntity {
         this.intro = intro;
         this.position = position;
         this.role = role;
+        this.status = status;
     }
 
     // 기술스택 목록 등록

@@ -128,7 +128,7 @@ public class TrustScoreHistoryRepositoryTest {
 
         // when
         List<ProjectUserHistoryDto> projectUserHistory =
-                trustScoreHistoryRepository.getProjectUserHistory(100L, userId);
+                trustScoreHistoryRepository.getProjectUserHistory(10000000000L, userId);
 
         // then
         Assertions.assertThat(projectUserHistory).isEmpty();

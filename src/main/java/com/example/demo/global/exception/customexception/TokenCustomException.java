@@ -22,6 +22,15 @@ public class TokenCustomException extends CustomException {
     public static final TokenCustomException DOES_NOT_REFRESH_TOKEN =
             new TokenCustomException(TokenErrorCode.DOES_NOT_REFRESH_TOKEN);
 
+    public static final TokenCustomException INSUFFICIENT_USER_IDENTIFICATION_FOR_TOKEN_REISSUE =
+            new TokenCustomException(TokenErrorCode.INSUFFICIENT_USER_IDENTIFICATION_FOR_TOKEN_REISSUE);
+
+    public static final TokenCustomException INVALID_REFRESH_TOKEN =
+            new TokenCustomException(TokenErrorCode.INVALID_REFRESH_TOKEN);
+
+    public static final TokenCustomException REFRESH_TOKEN_NOT_FOUND =
+            new TokenCustomException(TokenErrorCode.REFRESH_TOKEN_NOT_FOUND);
+
     public TokenCustomException(TokenErrorCode tokenErrorCode) {
         super(tokenErrorCode);
     }

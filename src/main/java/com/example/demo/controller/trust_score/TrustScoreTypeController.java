@@ -53,7 +53,7 @@ public class TrustScoreTypeController {
                         .keyword(keyword)
                         .build();
         Page<TrustScoreTypeReadResponseDto> searchResults =
-                trustScoreTypeService.getSearchResults(criteria);
+                trustScoreTypeService.getSearchResults(criteria, pageable);
         return new ResponseEntity<>(ResponseDto.success("success", searchResults), HttpStatus.OK);
     }
 
